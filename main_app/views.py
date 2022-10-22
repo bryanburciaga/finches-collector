@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms  import FeedingForm
 from django.contrib.auth.forms import UserCreationForm
@@ -62,7 +63,7 @@ def signup(request):
     form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form })
 
-class FinchesCreate(CreateView):
+class FinchesCreate(LoginRequiredMixin, CreateView):
     model = Finch
     fields = ('name', 'breed', 'description', 'age')
 
@@ -70,10 +71,10 @@ class FinchesCreate(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-class FinchesUpdate(UpdateView):
+class FinchesUpdate(LoginRequiredMixin, UpdateView):
     model = Finch
     fields = ('age', 'description')
 
-class FinchesDelete(DeleteView):
+class FinchesDelete(LoginRequiredMixin, DeleteView):
     model = Finch
     success_url = '/finches/'
