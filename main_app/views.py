@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 
+from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.contrib.auth import login
@@ -15,10 +16,12 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+@login_required
 def finches_index(request):
     finches = Finch.objects.filter(user=request.user)
     return render(request, 'finches/index.html', {'finches': finches})
 
+@login_required
 def finches_detail(request, finch_id):
     finch = Finch.objects.get(id=finch_id)
     feeding_form = FeedingForm()
@@ -27,6 +30,7 @@ def finches_detail(request, finch_id):
         'feeding_form': feeding_form
     })
 
+@login_required
 def add_feeding(request, finch_id):
     form = FeedingForm(request.POST) 
     
@@ -37,6 +41,7 @@ def add_feeding(request, finch_id):
     else: 
         print(form.errors)
     return redirect('finches_detail', finch_id=finch_id)
+
 
 def signup(request):
     # POST Request
