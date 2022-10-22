@@ -28,8 +28,14 @@
           </ul>
           <ul class="right">
             <li><a href="{% url 'about' %}">About</a></li>
+            {% if user.is_authenticated %}
             <li><a href="{% url 'finches_index' %}">View all my Finches</a></li>
             <li><a href="{% url 'finches_create' %}">Add a New Finches</a></li>
+            <li><a href="{% url 'logout' %}">Logout</li></a>
+            {% else %}
+            <li><a href="{% url 'login' %}">Login</li></a>
+            <li><a href="{% url 'signup' %}">Signup</li></a>
+            {% endif %}
           </ul>
         </div>
       </nav>
